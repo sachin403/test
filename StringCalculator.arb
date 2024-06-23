@@ -26,6 +26,24 @@ class StringCalculator
       end
  end
 
+
+ #4 Support different delimiters 
+
+ class StringCalculator
+    def add(numbers)
+     
+     return 0 if numbers.empty?
+
+     delimiter = /,|\n/
+     if numbers.start_with?("//")
+       delimiter, numbers = numbers[2..].split("\n", 2)
+       delimiter = Regexp.escape(delimiter)
+     end
+
+     numbers.split(/#{delimiter}/).map(&:to_i).reduce(0, :+)
+    end
+ end
+
 # Test Cases step-1
 def setup
     @calculator = StringCalculator.new
@@ -53,4 +71,10 @@ end
 
 def new_lines_between_numbers
   assert_equal 6, @calculator.add("1\n2,3")
+end
+
+#Test Case for step-4
+
+def different_delimiters
+  assert_equal 3, @calculator.add("//;\n1;2")
 end
