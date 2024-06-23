@@ -1,6 +1,6 @@
-class StringCalculator
+  #  1.string of comma-separated numbers Output: an integer, sum of the numbers
 
-  #  string of comma-separated numbers Output: an integer, sum of the numbers
+class StringCalculator
 
   def add(numbers)
     return 0 if numbers.empty?
@@ -8,8 +8,16 @@ class StringCalculator
   end
 end
 
+# 2.Allow the add method to handle any amount of numbers.
 
-# Test Cases
+ class StringCalculator
+      def add(numbers)
+        return 0 if numbers.empty?
+        numbers.split(',').map(&:to_i).reduce(0, :+)
+      end
+ end
+
+# Test Cases step-1
 def setup
     @calculator = StringCalculator.new
 end
@@ -24,4 +32,10 @@ end
 
 def test_two_numbers
     assert_equal 6, @calculator.add("1,5")
+end
+
+#Test Case for Step-2
+
+def multiple_numbers
+        assert_equal 9, @calculator.add("1,3,5")
 end
