@@ -44,6 +44,25 @@ class StringCalculator
     end
  end
 
+ #5.negative number will throw an exception: "negative numbers not allowed
+class StringCalculator
+  def add(numbers)
+    return 0 if numbers.empty?
+
+    delimiter = /,|\n/
+    if numbers.start_with?("//")
+      delimiter, numbers = numbers[2..].split("\n", 2)
+      delimiter = Regexp.escape(delimiter)
+    end
+
+    num_array = numbers.split(/#{delimiter}/).map(&:to_i)
+    negatives = num_array.select { |num| num < 0 }
+    raise "Negatives not allowed: #{negatives.join(', ')}" unless negatives.empty?
+
+    num_array.reduce(0, :+)
+  end
+end
+
 # Test Cases step-1
 def setup
     @calculator = StringCalculator.new
@@ -77,4 +96,13 @@ end
 
 def different_delimiters
   assert_equal 3, @calculator.add("//;\n1;2")
+end
+
+#Test case for Step-5
+
+def negative_numbers
+  exception = assert_raises RuntimeError do
+    @calculator.add("1,-2,3")
+  end
+  assert_equal "Negatives not allowed: -2", exception.message
 end
